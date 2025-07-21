@@ -1,0 +1,57 @@
+{
+  "name": "n8n-mcp-server",
+  "version": "1.0.0",
+  "description": "Model Context Protocol (MCP) server for n8n workflow management, providing comprehensive API access to n8n workflows, executions, credentials, and more",
+  "main": "build/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node start.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "clean": "rm -rf build",
+    "prebuild": "npm run clean"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "n8n",
+    "workflow-automation",
+    "api",
+    "typescript"
+  ],
+  "author": "n8n MCP Server Team",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.4.0",
+    "axios": "^1.6.0",
+    "zod": "^3.22.0",
+    "winston": "^3.11.0",
+    "dotenv": "^16.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/jest": "^29.5.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-org/n8n-mcp-server.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-org/n8n-mcp-server/issues"
+  },
+  "homepage": "https://github.com/your-org/n8n-mcp-server#readme"
+} 
