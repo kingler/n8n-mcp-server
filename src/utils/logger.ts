@@ -37,19 +37,23 @@ const createLogger = (config: EnvConfig) => {
   );
 
   // Create logger instance
-  const logger = winston.createLogger({
-    level: logLevel,
-    format: logFormat,
-    defaultMeta: { service: 'n8n-mcp-server' },
-    transports: [
-      // Console transport for development
+  const transports: winston.transport[] = [];
+  
+  // Only add console transport if not running as MCP server
+  if (process.env['MCP_MODE'] !== 'true' && !process.env['MCP']) {
+    transports.push(
       new winston.transports.Console({
         format: winston.format.combine(
           winston.format.colorize(),
           winston.format.simple()
         )
-      }),
-      // File transport for production logs
+      })
+    );
+  }
+  
+  // Only add file transports if not in MCP mode
+  if (process.env['MCP_MODE'] !== 'true') {
+    transports.push(
       new winston.transports.File({
         filename: 'logs/error.log',
         level: 'error',
@@ -61,11 +65,26 @@ const createLogger = (config: EnvConfig) => {
         maxsize: 5242880, // 5MB
         maxFiles: 5,
       })
-    ],
+    );
+  }
+  
+  // In MCP mode, add a silent transport to prevent warnings
+  if (process.env['MCP_MODE'] === 'true' && transports.length === 0) {
+    transports.push(new winston.transports.Console({
+      level: 'error',
+      silent: true
+    }));
+  }
+
+  const logger = winston.createLogger({
+    level: logLevel,
+    format: logFormat,
+    defaultMeta: { service: 'n8n-mcp-server' },
+    transports,
   });
 
-  // Add request logging for development
-  if (process.env['NODE_ENV'] === 'development') {
+  // Add request logging for development (but not in MCP mode)
+  if (process.env['NODE_ENV'] === 'development' && process.env['MCP_MODE'] !== 'true' && !process.env['MCP']) {
     logger.add(new winston.transports.Console({
       format: winston.format.combine(
         winston.format.colorize(),

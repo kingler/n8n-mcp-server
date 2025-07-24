@@ -1,0 +1,2 @@
+#!/bin/bash
+echo '{"jsonrpc":"2.0","id":0,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"test","version":"1.0.0"}}}' | node test-basic-mcp.js 2>&1

@@ -21,16 +21,21 @@ async function main(): Promise<void> {
     // Initialize logging system
     initializeLogger(config);
     
-    logger.info('Starting n8n MCP Server...', {
-      version: '1.0.0',
-      n8nApiUrl: config.n8nApiUrl,
-      logLevel: config.logLevel,
-    });
+    // Only log if not in MCP mode
+    if (process.env['MCP_MODE'] !== 'true') {
+      logger.info('Starting n8n MCP Server...', {
+        version: '1.0.0',
+        n8nApiUrl: config.n8nApiUrl,
+        logLevel: config.logLevel,
+      });
+    }
 
     // Start the MCP server
     await startServer();
     
-    logger.info('n8n MCP Server started successfully');
+    if (process.env['MCP_MODE'] !== 'true') {
+      logger.info('n8n MCP Server started successfully');
+    }
     
   } catch (error) {
     console.error('Failed to start n8n MCP Server:', error);
@@ -38,32 +43,27 @@ async function main(): Promise<void> {
   }
 }
 
-/**
- * Handle graceful shutdown
- */
-function handleShutdown(signal: string): void {
-  logger.info(`Received ${signal}, shutting down gracefully...`);
-  process.exit(0);
+// Only set up process handlers if not in MCP mode
+// (MCP mode handlers are set up in server.ts)
+if (process.env['MCP_MODE'] !== 'true') {
+  // Handle uncaught exceptions
+  process.on('uncaughtException', (error) => {
+    logger.error('Uncaught exception:', { error: error.message, stack: error.stack });
+    process.exit(1);
+  });
+
+  // Handle unhandled promise rejections
+  process.on('unhandledRejection', (reason, promise) => {
+    logger.error('Unhandled promise rejection:', { reason, promise });
+    process.exit(1);
+  });
 }
 
-// Register shutdown handlers
-process.on('SIGINT', () => handleShutdown('SIGINT'));
-process.on('SIGTERM', () => handleShutdown('SIGTERM'));
+// Start the server if this file is run directly or via start.js
+const isDirectRun = import.meta.url === `file://${process.argv[1]}`;
+const isStartScript = process.argv[1]?.endsWith('/start.js');
 
-// Handle uncaught exceptions
-process.on('uncaughtException', (error) => {
-  logger.error('Uncaught exception:', { error: error.message, stack: error.stack });
-  process.exit(1);
-});
-
-// Handle unhandled promise rejections
-process.on('unhandledRejection', (reason, promise) => {
-  logger.error('Unhandled promise rejection:', { reason, promise });
-  process.exit(1);
-});
-
-// Start the server if this file is run directly
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (isDirectRun || isStartScript) {
   main().catch((error) => {
     console.error('Failed to start server:', error);
     process.exit(1);

@@ -65,22 +65,59 @@ import { CheckConnectivityHandler, GetHealthStatusHandler } from '../tools/utili
 /**
  * All available tool definitions - automatically generated from handler classes
  */
-export const TOOL_DEFINITIONS: ToolDefinition[] = [
-  // Workflow Tools  // ListWorkflowsHandler.definition, // TODO: Add missing definitions  //  // GetWorkflowHandler.definition, // TODO: Add missing definitions // TODO: Add static definition  //  // CreateWorkflowHandler.definition, // TODO: Add missing definitions // TODO: Add static definition  //  // UpdateWorkflowHandler.definition, // TODO: Add missing definitions // TODO: Add static definition  //  // DeleteWorkflowHandler.definition, // TODO: Add missing definitions // TODO: Add static definition  // ActivateWorkflowHandler.definition, // TODO: Add missing definitions  // DeactivateWorkflowHandler.definition, // TODO: Add missing definitions  // UpdateWorkflowTagsHandler.definition, // TODO: Add missing definitions  // TransferWorkflowHandler.definition, // TODO: Add missing definitions
+export const TOOL_DEFINITIONS = [
+  // Workflow Tools
+  ListWorkflowsHandler.definition,
+  GetWorkflowHandler.definition,
+  CreateWorkflowHandler.definition,
+  UpdateWorkflowHandler.definition,
+  DeleteWorkflowHandler.definition,
+  ActivateWorkflowHandler.definition,
+  DeactivateWorkflowHandler.definition,
+  UpdateWorkflowTagsHandler.definition,
+  TransferWorkflowHandler.definition,
 
-  // Execution Tools  //  // ListExecutionsHandler.definition, // TODO: Add missing definitions // TODO: Add static definition  //  // ExecuteWorkflowHandler.definition, // TODO: Add missing definitions // TODO: Add static definition  // GetExecutionHandler.definition, // TODO: Add missing definitions  // DeleteExecutionHandler.definition, // TODO: Add missing definitions  // RetryExecutionHandler.definition, // TODO: Add missing definitions  // StopExecutionHandler.definition, // TODO: Add missing definitions
+  // Execution Tools
+  ListExecutionsHandler.definition,
+  // ExecuteWorkflowHandler.definition, // TODO: Add static definition
+  GetExecutionHandler.definition,
+  DeleteExecutionHandler.definition,
+  RetryExecutionHandler.definition,
+  StopExecutionHandler.definition,
 
-  // Credential Tools  //  // ListCredentialsHandler.definition, // TODO: Add missing definitions // TODO: Add static definition  //  // CreateCredentialHandler.definition, // TODO: Add missing definitions // TODO: Add static definition  // GetCredentialHandler.definition, // TODO: Add missing definitions  // UpdateCredentialHandler.definition, // TODO: Add missing definitions  // DeleteCredentialHandler.definition, // TODO: Add missing definitions  // TestCredentialHandler.definition, // TODO: Add missing definitions  // TransferCredentialHandler.definition, // TODO: Add missing definitions
+  // Credential Tools
+  ListCredentialsHandler.definition,
+  CreateCredentialHandler.definition,
+  GetCredentialHandler.definition,
+  UpdateCredentialHandler.definition,
+  DeleteCredentialHandler.definition,
+  TestCredentialHandler.definition,
+  TransferCredentialHandler.definition,
 
-  // Tag Tools  // ListTagsHandler.definition, // TODO: Add missing definitions  // GetTagHandler.definition, // TODO: Add missing definitions  // CreateTagHandler.definition, // TODO: Add missing definitions  // UpdateTagHandler.definition, // TODO: Add missing definitions  // DeleteTagHandler.definition, // TODO: Add missing definitions
+  // Tag Tools
+  ListTagsHandler.definition,
+  GetTagHandler.definition,
+  CreateTagHandler.definition,
+  UpdateTagHandler.definition,
+  DeleteTagHandler.definition,
 
-  // User Tools  // ListUsersHandler.definition, // TODO: Add missing definitions  // GetUserHandler.definition, // TODO: Add missing definitions
+  // User Tools
+  ListUsersHandler.definition,
+  GetUserHandler.definition,
 
-  // Variable Tools  // ListVariablesHandler.definition, // TODO: Add missing definitions  // GetVariableHandler.definition, // TODO: Add missing definitions  // CreateVariableHandler.definition, // TODO: Add missing definitions  // UpdateVariableHandler.definition, // TODO: Add missing definitions  // DeleteVariableHandler.definition, // TODO: Add missing definitions
+  // Variable Tools
+  ListVariablesHandler.definition,
+  GetVariableHandler.definition,
+  CreateVariableHandler.definition,
+  UpdateVariableHandler.definition,
+  DeleteVariableHandler.definition,
 
-  // Upload Tools  //  // UploadWorkflowHandler.definition, // TODO: Add missing definitions // TODO: Add static definition
+  // Upload Tools
+  // UploadWorkflowHandler.definition, // TODO: Add static definition
 
-  // Utility Tools  // CheckConnectivityHandler.definition, // TODO: Add missing definitions  // GetHealthStatusHandler.definition, // TODO: Add missing definitions
+  // Utility Tools
+  CheckConnectivityHandler.definition,
+  GetHealthStatusHandler.definition,
 ];
 
 /**
@@ -217,7 +254,21 @@ export async function startServer(): Promise<void> {
     
     await server.connect(transport);
     
-    console.log('n8n MCP Server started successfully');
+    // Log successful start only if not in MCP mode
+    if (process.env['MCP_MODE'] !== 'true') {
+      console.log('n8n MCP Server started successfully');
+    }
+    
+    // Handle process events gracefully
+    process.on('SIGINT', async () => {
+      await server.close();
+      process.exit(0);
+    });
+    
+    process.on('SIGTERM', async () => {
+      await server.close();
+      process.exit(0);
+    });
   } catch (error) {
     console.error('Failed to start n8n MCP Server:', error);
     process.exit(1);
