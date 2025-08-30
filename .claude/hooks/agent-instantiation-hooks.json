@@ -1,0 +1,151 @@
+{
+  "hooks": {
+    "user-prompt-submit": {
+      "description": "Analyzes user prompts and suggests appropriate technology agents",
+      "patterns": [
+        {
+          "id": "nextjs-routing",
+          "patterns": ["next.js", "nextjs", "app router", "pages router", "server component", "client component", "next/"],
+          "agent": "nextjs-architect",
+          "message": "🔍 Detected Next.js context. Consider using: claude code --agent nextjs-architect"
+        },
+        {
+          "id": "react-components",
+          "patterns": ["react component", "useState", "useEffect", "hooks", "jsx", "tsx component", "React."],
+          "agent": "react-component-engineer",
+          "message": "⚛️ Detected React development. Consider using: claude code --agent react-component-engineer"
+        },
+        {
+          "id": "typescript-types",
+          "patterns": ["typescript", "type safety", "interface", "type definition", "generics", "tsconfig"],
+          "agent": "typescript-guardian",
+          "message": "📘 Detected TypeScript work. Consider using: claude code --agent typescript-guardian"
+        },
+        {
+          "id": "tailwind-styling",
+          "patterns": ["tailwind", "className", "dark mode", "responsive design", "utility classes", "tailwind.config"],
+          "agent": "tailwind-css-designer",
+          "message": "🎨 Detected Tailwind CSS. Consider using: claude code --agent tailwind-css-designer"
+        },
+        {
+          "id": "radix-components",
+          "patterns": ["radix", "radix-ui", "accessible", "aria", "dropdown", "dialog", "popover", "@radix-ui"],
+          "agent": "radix-ui-specialist",
+          "message": "♿ Detected Radix UI/Accessibility. Consider using: claude code --agent radix-ui-specialist"
+        },
+        {
+          "id": "framer-animations",
+          "patterns": ["framer", "motion", "animation", "animate", "transition", "gesture", "framer-motion"],
+          "agent": "framer-motion-animator",
+          "message": "🎬 Detected animation work. Consider using: claude code --agent framer-motion-animator"
+        },
+        {
+          "id": "copilotkit-integration",
+          "patterns": ["copilotkit", "copilot", "conversation", "chat ui", "useCopilot", "@copilotkit"],
+          "agent": "copilotkit-integration-expert",
+          "message": "💬 Detected CopilotKit. Consider using: claude code --agent copilotkit-integration-expert"
+        },
+        {
+          "id": "n8n-workflows",
+          "patterns": ["n8n", "workflow", "webhook", "trigger", "custom node", "automation"],
+          "agent": "n8n-workflow-engineer",
+          "message": "⚙️ Detected N8N workflow. Consider using: claude code --agent n8n-workflow-engineer"
+        },
+        {
+          "id": "prisma-database",
+          "patterns": ["prisma", "schema.prisma", "migration", "database", "orm", "@prisma"],
+          "agent": "prisma-database-architect",
+          "message": "🗃️ Detected Prisma/Database. Consider using: claude code --agent prisma-database-architect"
+        },
+        {
+          "id": "neo4j-graph",
+          "patterns": ["neo4j", "cypher", "graph", "knowledge graph", "node relationship", "graph database"],
+          "agent": "neo4j-graph-specialist",
+          "message": "🕸️ Detected Neo4j/Graph. Consider using: claude code --agent neo4j-graph-specialist"
+        },
+        {
+          "id": "postgresql-optimization",
+          "patterns": ["postgresql", "postgres", "query optimization", "index", "vacuum", "pg_"],
+          "agent": "postgresql-performance-tuner",
+          "message": "🐘 Detected PostgreSQL. Consider using: claude code --agent postgresql-performance-tuner"
+        },
+        {
+          "id": "docker-containers",
+          "patterns": ["docker", "dockerfile", "container", "compose", "docker-compose", "image"],
+          "agent": "docker-orchestration-manager",
+          "message": "🐳 Detected Docker. Consider using: claude code --agent docker-orchestration-manager"
+        },
+        {
+          "id": "redis-caching",
+          "patterns": ["redis", "cache", "session", "pub/sub", "memory store", "caching strategy"],
+          "agent": "redis-cache-optimizer",
+          "message": "⚡ Detected Redis/Caching. Consider using: claude code --agent redis-cache-optimizer"
+        },
+        {
+          "id": "websocket-realtime",
+          "patterns": ["websocket", "socket.io", "real-time", "ws://", "connection", "emit", "broadcast"],
+          "agent": "websocket-communication-architect",
+          "message": "🔌 Detected WebSocket. Consider using: claude code --agent websocket-communication-architect"
+        },
+        {
+          "id": "vitest-testing",
+          "patterns": ["vitest", "test", "spec", "describe", "expect", "mock", "test coverage"],
+          "agent": "vitest-testing-engineer",
+          "message": "🧪 Detected testing. Consider using: claude code --agent vitest-testing-engineer"
+        },
+        {
+          "id": "npm-workspaces",
+          "patterns": ["npm workspace", "monorepo", "package.json", "dependencies", "npm install", "workspace:"],
+          "agent": "npm-workspace-coordinator",
+          "message": "📦 Detected npm/monorepo. Consider using: claude code --agent npm-workspace-coordinator"
+        },
+        {
+          "id": "mcp-protocol",
+          "patterns": ["mcp", "model context protocol", "tool registration", "protocol message", "mcp server"],
+          "agent": "mcp-protocol-implementer",
+          "message": "🔧 Detected MCP Protocol. Consider using: claude code --agent mcp-protocol-implementer"
+        }
+      ]
+    },
+    "file-edit": {
+      "description": "Suggests agents based on file extensions and paths",
+      "rules": [
+        {
+          "pattern": "**/*.tsx",
+          "agents": ["react-component-engineer", "typescript-guardian"],
+          "priority": ["react-component-engineer"]
+        },
+        {
+          "pattern": "**/app/**/*.tsx",
+          "agents": ["nextjs-architect", "react-component-engineer"],
+          "priority": ["nextjs-architect"]
+        },
+        {
+          "pattern": "**/*.css",
+          "agents": ["tailwind-css-designer"],
+          "priority": ["tailwind-css-designer"]
+        },
+        {
+          "pattern": "**/schema.prisma",
+          "agents": ["prisma-database-architect"],
+          "priority": ["prisma-database-architect"]
+        },
+        {
+          "pattern": "**/docker-compose*.yml",
+          "agents": ["docker-orchestration-manager"],
+          "priority": ["docker-orchestration-manager"]
+        },
+        {
+          "pattern": "**/*.spec.ts",
+          "agents": ["vitest-testing-engineer"],
+          "priority": ["vitest-testing-engineer"]
+        },
+        {
+          "pattern": "**/n8n/**/*.ts",
+          "agents": ["n8n-workflow-engineer"],
+          "priority": ["n8n-workflow-engineer"]
+        }
+      ]
+    }
+  }
+}

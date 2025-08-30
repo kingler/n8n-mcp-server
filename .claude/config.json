@@ -1,0 +1,46 @@
+{
+  "version": "1.0.0",
+  "project": "n8n-mas",
+  "description": "N8N Multi-Agent System Development Hooks",
+  "author": "N8N MAS Team",
+  "hooks": {
+    "enabled": true,
+    "autoLoad": true,
+    "categories": [
+      "planning",
+      "architecture",
+      "development",
+      "testing",
+      "integration",
+      "debugging",
+      "quality"
+    ]
+  },
+  "technology_stack": {
+    "typescript": "5.9.2",
+    "tailwindcss": "4.1.11",
+    "shadcn-ui": "2.10.0",
+    "nextjs": "15.4",
+    "prisma": "6.13.0",
+    "supabase": "latest",
+    "neo4j": "latest",
+    "copilotkit": "latest",
+    "n8n": "latest",
+    "litellm": "latest"
+  },
+  "workspace_paths": {
+    "web": "apps/web",
+    "api": "apps/api",
+    "n8n": "apps/n8n",
+    "agent_framework": "packages/agent-framework",
+    "mcp_protocol": "packages/mcp-protocol",
+    "ui_components": "packages/ui-components"
+  },
+  "development_commands": {
+    "dev": "npm run dev",
+    "build": "npm run build",
+    "test": "npm run test",
+    "lint": "npm run lint",
+    "type-check": "npm run type-check"
+  }
+}

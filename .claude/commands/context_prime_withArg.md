@@ -1,0 +1,1 @@
+Follow the design guidelines from the $ARGUMENTS when analyzing UI design, CSS architecture, and component implementation.
